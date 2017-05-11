@@ -5,12 +5,14 @@
 #include "Sub.h"
 #include "Div.h"
 #include "Mul.h"
+#include "VarStore.h"
+#include "Variable.h"
 
 std::string versionNum = "0.2";
 std::string command;
 
 Command runCommand(char *command);
-
+VarStore *variables;
 int virtReg[100]; //Currently not in use, may be deleted
 bool compareCommand(std::string command, std::string compare){
     const char *commandArr = command.c_str();
@@ -121,6 +123,12 @@ Command runCommand(char *command){
     else if(compareCommand(token,"exit")){
         exit(0);
     }
+    else if(compareCommand(token,"bool") || compareCommand(token,"int") || compareCommand(token,"string")){
+        std::string type = token;
+        Variable var = Variable(type,variables);
+        std::vector<std::string> args = constructArgs(var,token,tokenProgress);
+        return var.executeCommand(args);
+    }
     else{
         Command empty = Command();
         empty.setReturnType(string);
@@ -130,6 +138,7 @@ Command runCommand(char *command){
 }
 
 int main() {
+    variables = new VarStore();
     while(true){
         printf("Lite Interpreter V%s:\n", versionNum.c_str());
         std::string command;

@@ -4,5 +4,5 @@
 
 #ifndef LITECPP_RETURNTYPE_H
 #define LITECPP_RETURNTYPE_H
-typedef enum {string, integer} ReturnType;
+typedef enum {string, integer, boolean} ReturnType;
 #endif //LITECPP_RETURNTYPE_H
